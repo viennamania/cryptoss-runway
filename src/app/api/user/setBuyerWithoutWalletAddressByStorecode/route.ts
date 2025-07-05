@@ -209,9 +209,9 @@ export async function POST(request: NextRequest) {
 
 
   // call api
-  // https://stable.makeup/api/user/getUser
+  // https://goodpay.stable.makeup/api/user/getUser
 
-  const apiUrl = `https://stable.makeup/api/user/setBuyerWithoutWalletAddressByStorecode`;
+  const apiUrl = `https://goodpay.stable.makeup/api/user/setBuyerWithoutWalletAddressByStorecode`;
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',

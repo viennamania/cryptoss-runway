@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
   */
   
   // api call to get order details
-  const apiUrl = `https://stable.makeup/api/order/getOneBuyOrder`;
+  const apiUrl = `https://goodpay.stable.makeup/api/order/getOneBuyOrder`;
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',

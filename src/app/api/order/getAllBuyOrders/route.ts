@@ -105,8 +105,8 @@ export async function POST(request: NextRequest) {
   */
 
   // call api
-  // https://stable.makeup/api/order/getAllBuyOrders
-  const apiUrl = `https://stable.makeup/api/order/getAllBuyOrders`;
+  // https://goodpay.stable.makeup/api/order/getAllBuyOrders
+  const apiUrl = `https://goodpay.stable.makeup/api/order/getAllBuyOrders`;
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',

@@ -43,8 +43,8 @@ export async function POST(request: NextRequest) {
   */
 
   // call api
-  // https://stable.makeup/api/store/getOneStore
-  const apiUrl = `https://stable.makeup/api/store/getOneStore`;
+  // https://goodpay.stable.makeup/api/store/getOneStore
+  const apiUrl = `https://goodpay.stable.makeup/api/store/getOneStore`;
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',

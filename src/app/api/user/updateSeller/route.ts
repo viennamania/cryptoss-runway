@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
 
 
   // call api
-  // api url is 'https://stable.makeup/api/user/updateSeller'
+  // api url is 'https://goodpay.stable.makeup/api/user/updateSeller'
 
-  const apiUrl = `https://stable.makeup/api/user/updateSeller`;
+  const apiUrl = `https://goodpay.stable.makeup/api/user/updateSeller`;
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
