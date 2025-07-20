@@ -2148,6 +2148,19 @@ export default function Index({ params }: any) {
                   )}
 
 
+                  <div className='w-full flex flex-col gap-2 items-center justify-center'>
+                    <button
+                      onClick={() => router.push('/' + params.lang + '/' + params.center + '/trade-history' + '?memberid=' + memberid)}
+                      className="flex w-32 bg-[#3167b4] text-[#f3f4f6] text-sm rounded-lg p-2 items-center justify-center
+                      hover:bg-[#3167b4]/80
+                      hover:cursor-pointer
+                      hover:scale-105
+                      transition-transform duration-200 ease-in-out
+                      ">
+                      거래내역
+                    </button> 
+
+                  </div>
 
 
 
