@@ -300,9 +300,9 @@ export default function Index({ params }: any) {
     
     
       // the contract's address
-      ///address: contractAddressArbitrum,
+      ///address: contractAddress,
   
-      address: contractAddressArbitrum,
+      address: contractAddress,
   
   
       // OPTIONAL: the contract's abi
@@ -1776,22 +1776,31 @@ export default function Index({ params }: any) {
 
     try {
       setUserLogin(true);
-      const response = await fetch('/api/user/userLogin', {
+      const response = await fetch('/api/user/loginUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           storecode: storecode,
-          nickname: nickname,
-          mobile: mobile,
+          memberid: memberid,
           password: userPassword,
         }),
       });
       const data = await response?.json();
       console.log('userLogin data', data);
-      if (data.walletAddress) {
-        setAddress(data.walletAddress);
+
+      if (data.user) {
+        
+        setAddress(data.user.walletAddress);
+
+        setNickname(data.user.nickname);
+
+        setDepositBankName(data.user.depositBankName || paramDepositBankName);
+        setDepositBankAccountNumber(data.user.depositBankAccountNumber || paramDepositBankAccountNumber);
+        setDepositName(data.user.depositName || paramDepositName);
+
+        setUser(data.user);
 
         toast.success('로그인 성공');
       } else {
@@ -1806,13 +1815,17 @@ export default function Index({ params }: any) {
     }
   }
 
+
+
+
+
     
   return (
 
     <main className="
       pl-2 pr-2
       pb-10 min-h-[100vh] flex flex-col items-center justify-start container
-      max-w-screen-lg
+      max-w-screen-2xl
       mx-auto
       bg-zinc-50
       text-zinc-500
@@ -1857,7 +1870,8 @@ export default function Index({ params }: any) {
                 className='rounded-full w-10 h-10'
               />
               <span className="text-sm text-zinc-100 font-semibold">
-                {storeInfo?.storeName}
+                {/*storeInfo?.storeName*/}
+                {storeInfo?.storeDescription || '가맹점'}
               </span>
             </div>
 
@@ -2063,7 +2077,8 @@ export default function Index({ params }: any) {
                         </span>
                       </div>
 
-                      <div className='mt-5 flex flex-col xl:flex-row gap-2 items-center justify-center'>
+                      <div className='mt-5 flex flex-col gap-2 items-center justify-center'>
+
                         <div className='flex flex-col gap-2 items-center justify-center'>
                           <span className="text-sm text-zinc-500">
                             아아디는 5-10자 영문, 숫자 조합으로 입력해주세요.
@@ -2089,7 +2104,7 @@ export default function Index({ params }: any) {
                           </span>
 
                           <input
-                            type="password"
+                            type="text"
                             value={userPassword || ''}
                             onChange={(e) => setUserPassword(e.target.value)}
                             placeholder="비밀번호"
@@ -2114,8 +2129,7 @@ export default function Index({ params }: any) {
                             || userLogining
                           }
                           className={`${loadingStoreInfo || !memberid || !userPassword || userLogining
-                            ? 'bg-[#f472b6]'
-                            : 'bg-black'
+                            ? 'bg-zinc-800 cursor-not-allowed' : 'bg-black'
                             
                           }
                             text-sm text-zinc-100
@@ -3440,12 +3454,12 @@ export default function Index({ params }: any) {
                                       className="text-sm bg-green-500 text-zinc-500 px-2 py-1 rounded-md"
                                       onClick={() => {
                                         {
-                                          window.open(`https://arbiscan.io/token/${contractAddress}?a=${item.walletAddress}`, '_blank')
+                                          window.open(`https://polygonscan.com/token/${contractAddress}?a=${item.walletAddress}`, '_blank')
                                         }
                                       }}
                                     >
                                       <Image
-                                        src='/logo-arbitrum.png'
+                                        src='/logo-polygon.png'
                                         alt="Chain"
                                         width={24}
                                         height={24}
@@ -3647,11 +3661,11 @@ export default function Index({ params }: any) {
                                             //console.log('Cancel Payment Request');
                                             // new window
 
-                                            window.open(`https://arbiscan.io/token/0xc2132d05d31c914a87c6611c10748aeb04b58e8f?a=0x2111b6A49CbFf1C8Cc39d13250eF6bd4e1B59cF6`, '_blank');
+                                            window.open(`https://polygonscan.com/token/0xc2132d05d31c914a87c6611c10748aeb04b58e8f?a=0x2111b6A49CbFf1C8Cc39d13250eF6bd4e1B59cF6`, '_blank');
                                         }}
                                     >
                                       <Image
-                                        src='/logo-arbitrum.png'
+                                        src='/logo-polygon.png'
                                         alt='cancel'
                                         width={20}
                                         height={20}
