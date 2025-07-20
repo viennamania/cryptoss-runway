@@ -3101,83 +3101,6 @@ const fetchBuyOrders = async () => {
 
 
 
-
-
-                                {item.buyer?.walletAddress === address && (
-
-                                  <div className="mt-4 flex flex-col items-center justify-center gap-2">
-
-
-
-                                    <div className="flex flex-row items-center gap-2">
-                                      <input
-                                        type="checkbox"
-                                        checked={agreementForCancelTrade[index]}
-                                        onChange={(e) => {
-                                          setAgreementForCancelTrade(
-                                            buyOrders.map((item, idx) => {
-                                              if (idx === index) {
-                                                return e.target.checked;
-                                              } else {
-                                                return false;
-                                              }
-                                            })
-                                          );
-                                        }}
-                                      />
-                                      <label className="text-sm text-zinc-500">
-                                        {I_agree_to_cancel_the_trade}
-                                      </label>
-                                    </div>
-
-
-                                    <div className="mt-5 flex flex-row items-center gap-2">
-
-                                      <button
-                                        disabled={cancellings[index] || !agreementForCancelTrade[index]}
-                                        className={`text-sm bg-red-500 text-white px-2 py-1 rounded-md ${cancellings[index] || !agreementForCancelTrade[index] ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-600'}`}
-                                        onClick={() => {
-
-                                          cancelTrade(item._id, index);
-
-                                        }}
-                                      >
-
-                                        <div className="flex flex-row items-center gap-2 px-2 py-1">
-                                          {cancellings[index] ? (
-                                            <div className="
-                                              w-4 h-4
-                                              border-2 border-zinc-800
-                                              rounded-full
-                                              animate-spin
-                                            ">
-                                              <Image
-                                                src="/loading.png"
-                                                alt="loading"
-                                                width={16}
-                                                height={16}
-                                              />
-                                            </div>
-                                          ) : (
-                                            <Image
-                                              src="/icon-cancelled.png"
-                                              alt="Cancel"
-                                              width={16}
-                                              height={16}
-                                            />
-                                          )}
-                                          {Cancel_My_Trade}
-                                        </div>
-                                          
-                                      
-                                      </button>
-                                    </div>
-
-                                  </div>
-
-                                )}
-
-
                               </div>
                             )}
 
@@ -3192,56 +3115,6 @@ const fetchBuyOrders = async () => {
                                 <span>{
                                   item.paymentConfirmedAt && new Date(item.paymentConfirmedAt)?.toLocaleString()
                                 }</span>
-                              </div>
-                            )}
-
-                            {
-                            item.seller && item.seller.walletAddress === address &&
-                            item.status === 'accepted' && (
-                              <div className="flex flex-row gap-1">
-
-                                {/* check box for agreement */}
-                                <input
-                                  disabled={escrowing[index] || requestingPayment[index]}
-                                  type="checkbox"
-                                  checked={requestPaymentCheck[index]}
-                                  onChange={(e) => {
-                                    setRequestPaymentCheck(
-                                      requestPaymentCheck.map((item, idx) => {
-                                        if (idx === index) {
-                                          return e.target.checked;
-                                        }
-                                        return item;
-                                      })
-                                    );
-                                  }}
-                                />
-
-                                <button
-                                  disabled={escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index]}
-                                  
-                                  className={`flex flex-row gap-1 text-sm text-white px-2 py-1 rounded-md ${escrowing[index] || requestingPayment[index] || !requestPaymentCheck[index] ? 'bg-gray-500' : 'bg-green-500'}`}
-                                  onClick={() => {
-
-                                    requestPayment(
-                                      index,
-                                      item._id,
-                                      item.tradeId,
-                                      item.usdtAmount
-                                    );
-                                  }}
-                                >
-                                  <Image
-                                    src="/loading.png"
-                                    alt="loading"
-                                    width={16}
-                                    height={16}
-                                    className={escrowing[index] || requestingPayment[index] ? 'animate-spin' : 'hidden'}
-                                  />
-                                  <span>{Request_Payment}</span>
-                                
-                                </button>
-
                               </div>
                             )}
 
@@ -3306,150 +3179,7 @@ const fetchBuyOrders = async () => {
 
 
 
-                          
-
-
-
-
-
-                            {item.status === 'ordered' && (
-                              <>
-
-                              {acceptingBuyOrder[index] ? (
-
-                                <div className="flex flex-row items-center gap-2">
-                                  <Image
-                                    src='/loading.png'
-                                    alt='loading'
-                                    width={35}
-                                    height={35}
-                                    className="animate-spin"
-                                  />
-                                  <div>{Accepting_Order}...</div>
-                                </div>
-
-
-                              ) : (
-                                <>
-                                  
-                                  {item.walletAddress === address ? (
-                                    <div className="flex flex-col space-y-4">
-                                      {My_Order}
-                                    </div>
-                                  ) : (
-                                    <div className="w-full flex items-center justify-center">
-
-                                      {item.status === 'ordered' && (
-                                        
-                                        // check if the order is expired
-                                        new Date().getTime() - new Date(item.createdAt).getTime() > 1000 * 60 * 60 * 24
-
-                                      ) ? (
-
-                                        <>
-                                          {/*
-                                          <Image
-                                            src="/icon-expired.png"
-                                            alt="Expired"
-                                            width={80}
-                                            height={80}
-                                          />
-                                          */}
-                                      
-                                      </>
-                                      ) : (
-                                        <>
-
-                                          {user?.seller && user?.seller?.bankInfo && (
-
-              
-
-                                            <div className="mt-4 flex flex-col items-center justify-center">
-
-                                              {/* agreement for trade */}
-                                              <div className="flex flex-row items-center space-x-2">
-                                                <input
-                                                  disabled={!address}
-                                                  type="checkbox"
-                                                  checked={agreementForTrade[index]}
-                                                  onChange={(e) => {
-                                                      setAgreementForTrade(
-                                                          buyOrders.map((item, idx) => {
-                                                              if (idx === index) {
-                                                                  return e.target.checked;
-                                                              } else {
-                                                                  return false;
-                                                              }
-                                                          })
-                                                      );
-                                                  }}
-                                                />
-                                                <label className="text-sm text-zinc-500">
-                                                  {I_agree_to_the_terms_of_trade}
-                                                </label>
-                                              </div>
-
-
-
-                                              {/* input sms receiver mobile number */}
-
-                                              {address && agreementForTrade[index] && (
-                                                <div className="mt-8 flex flex-row items-center justify-start gap-2">
-
-                                                  <span className="text-sm text-zinc-500">SMS</span>
-
-                                                  <div className="flex flex-col items-start justify-start">
-                                                    <input
-                                                      disabled={!address || !agreementForTrade[index]}
-                                                      type="text"
-                                                      placeholder="SMS Receiver Mobile Number"
-                                                      className={`w-full px-4 py-2 rounded-md text-black`}
-                                                      value={smsReceiverMobileNumber}
-                                                      onChange={(e) => {
-                                                          setSmsReceiverMobileNumber(e.target.value);
-                                                      }}
-                                                    />
-                                                  </div>
-                                                </div>
-                                              )}
-
-                                              <button
-                                                disabled={!address || !agreementForTrade[index]}
-                                                className={`m-10 text-lg text-white px-4 py-2 rounded-md
-                                                  ${!address || !agreementForTrade[index] ? 'bg-zinc-800' : 'bg-green-500 hover:bg-green-600'}
-                                                  `}
-                                                onClick={() => {
-      
-                                                    acceptBuyOrder(index, item._id, smsReceiverMobileNumber);
-                                              
-
-                                                }}
-                                              >
-                                                {Buy_Order_Accept} {item.usdtAmount} USDT
-                                              </button>
-
-
-                                            </div>
-
-                                          )}
-
-                                        </>
-
-                                      )}
-
-                                    </div>
-
-
-
-                                    )}
-
-                                  </>
-
-                                )}
-
-                              </>
-
-                            )}
+                      
 
 
 
@@ -3506,7 +3236,7 @@ const fetchBuyOrders = async () => {
                   value={limit}
                   onChange={(e) =>
                     
-                    router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(e.target.value)}&page=${page}&wallet=${wallet}&searchMyOrders=${searchMyOrders}`)
+                    router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(e.target.value)}&page=${page}&memberid=${memberid}&searchMyOrders=${searchMyOrders}`)
 
                   }
 
@@ -3525,7 +3255,7 @@ const fetchBuyOrders = async () => {
                 className={`text-sm text-white px-4 py-2 rounded-md ${Number(page) <= 1 ? 'bg-gray-500' : 'bg-green-500 hover:bg-green-600'}`}
                 onClick={() => {
                   
-                  router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(limit)}&page=1`);
+                  router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(limit)}&page=1&memberid=${memberid}&searchMyOrders=${searchMyOrders}`); // 처음 페이지로 이동
 
                 }
               }
@@ -3538,8 +3268,8 @@ const fetchBuyOrders = async () => {
                 disabled={Number(page) <= 1}
                 className={`text-sm text-white px-4 py-2 rounded-md ${Number(page) <= 1 ? 'bg-gray-500' : 'bg-green-500 hover:bg-green-600'}`}
                 onClick={() => {
-                  
-                  router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(limit)}&page=${Number(page) - 1}`);
+
+                  router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(limit)}&page=${Number(page) - 1}&memberid=${memberid}&searchMyOrders=${searchMyOrders}`);
 
                 }}
               >
@@ -3557,7 +3287,7 @@ const fetchBuyOrders = async () => {
                 className={`text-sm text-white px-4 py-2 rounded-md ${Number(page) >= Math.ceil(Number(totalCount) / Number(limit)) ? 'bg-gray-500' : 'bg-green-500 hover:bg-green-600'}`}
                 onClick={() => {
                   
-                  router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(limit)}&page=${Number(page) + 1}`);
+                  router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(limit)}&page=${Number(page) + 1}&memberid=${memberid}&searchMyOrders=${searchMyOrders}`);
 
                 }}
               >
@@ -3569,8 +3299,8 @@ const fetchBuyOrders = async () => {
                 disabled={Number(page) >= Math.ceil(Number(totalCount) / Number(limit))}
                 className={`text-sm text-white px-4 py-2 rounded-md ${Number(page) >= Math.ceil(Number(totalCount) / Number(limit)) ? 'bg-gray-500' : 'bg-green-500 hover:bg-green-600'}`}
                 onClick={() => {
-                  
-                  router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(limit)}&page=${Math.ceil(Number(totalCount) / Number(limit))}`);
+
+                  router.push(`/${params.lang}/${params.center}/trade-history?limit=${Number(limit)}&page=${Math.ceil(Number(totalCount) / Number(limit))}&memberid=${memberid}&searchMyOrders=${searchMyOrders}`);
 
                 }}
               >
