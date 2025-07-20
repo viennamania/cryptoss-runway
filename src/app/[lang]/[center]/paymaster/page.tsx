@@ -240,9 +240,9 @@ export default function Index({ params }: any) {
 
     const searchParams = useSearchParams();
 
-    const storeUser = searchParams.get('storeUser');
+    const paramMemberid = searchParams.get('memberid');
 
-    console.log('storeUser', storeUser);
+    console.log('paramMemberid', paramMemberid);
 
 
     //const storecode = storeUser?.split('@').slice(-1)[0];
@@ -253,14 +253,7 @@ export default function Index({ params }: any) {
 
     console.log("storecode", storecode);
 
-    const paramStoreUser = storeUser;
-
- 
-    //console.log("memberid", memberid);
-
   
-
-
   
 
     const paramDepositName = searchParams.get('depositName');
@@ -734,7 +727,7 @@ export default function Index({ params }: any) {
    
 
 
-    const [nickname, setNickname] = useState(storeUser);
+    const [nickname, setNickname] = useState("");
 
     const [inputNickname, setInputNickname] = useState('');
 
@@ -754,7 +747,7 @@ export default function Index({ params }: any) {
 
     // user walletAddress is auto generated or not
     const [isMyWalletAddress, setIsMyWalletAddress] = useState(false);
-    const [memberid, setMemberId] = useState("");
+    const [memberid, setMemberId] = useState(paramMemberid || "");
 
     const [userPassword, setUserPassword] = useState('');
 
@@ -794,7 +787,6 @@ export default function Index({ params }: any) {
 
 
     useEffect(() => {
-
         if (!orderId) {
           return;
         }
@@ -1709,6 +1701,54 @@ export default function Index({ params }: any) {
 
 
 
+  useEffect(() => {
+    
+    try {
+      if (memberid) {
+        setLoadingUser(true);
+        fetch('/api/user/loginUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            storecode: storecode,
+            memberid: memberid,
+            password: userPassword,
+          }),
+        })
+        .then(response => response?.json())
+        .then(data => {
+          console.log('loginUser data', data);
+          if (data.user) {
+            setAddress(data.user.walletAddress);
+            setNickname(data.user.nickname);
+            setDepositBankName(data.user.depositBankName || paramDepositBankName);
+            setDepositBankAccountNumber(data.user.depositBankAccountNumber || paramDepositBankAccountNumber);
+            setDepositName(data.user.depositName || paramDepositName);
+            setUser(data.user);
+          } else {
+            toast.error('로그인 실패');
+          }
+        })
+        .catch(error => {
+          console.error('loginUser error', error);
+          toast.error('로그인 실패');
+        })
+        .finally(() => {
+          setLoadingUser(false);
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching user', error);
+      setLoadingUser(false);
+      toast.error('회원 정보를 불러오는 데 실패했습니다.');
+    }
+  }, [memberid, userPassword, storecode, paramDepositName, paramDepositBankName, paramDepositBankAccountNumber]);
+
+
+
+
   if (orderId !== '0') {
       
       return (
@@ -1759,6 +1799,7 @@ export default function Index({ params }: any) {
     );
   }
     */
+
 
 
 
@@ -1814,6 +1855,7 @@ export default function Index({ params }: any) {
       setUserLogin(false);
     }
   }
+
 
 
 
