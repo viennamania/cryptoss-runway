@@ -2222,6 +2222,32 @@ export default function Index({ params }: any) {
 
 
 
+  // paramDepositAmountKrw
+
+  // if paramDepositAmountKrw is more than 3000000, then set to 3000000, then alert user to select another amount
+  if (paramDepositAmountKrw && Number(paramDepositAmountKrw) > 3000000) {
+    toast.error('구매 금액은 3000000원 이하로 선택해주세요');
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <Image
+            src="/banner-404.gif"
+            alt="Error"
+            width={200}
+            height={200}
+            className="w-32 h-32"
+          />
+          <div className="text-sm text-zinc-500">
+            구매 금액은 3000000원 이하로 선택해주세요.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+
+
+
     
   return (
 
