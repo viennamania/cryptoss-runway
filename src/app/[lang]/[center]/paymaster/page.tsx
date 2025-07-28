@@ -240,9 +240,9 @@ export default function Index({ params }: any) {
 
     const searchParams = useSearchParams();
 
-    const paramMemberid = searchParams.get('memberid');
+    const storeUser = searchParams.get('storeUser');
 
-    console.log('paramMemberid', paramMemberid);
+    console.log('storeUser', storeUser);
 
 
     //const storecode = storeUser?.split('@').slice(-1)[0];
@@ -253,7 +253,14 @@ export default function Index({ params }: any) {
 
     console.log("storecode", storecode);
 
+    const paramStoreUser = storeUser;
+
+ 
+    //console.log("memberid", memberid);
+
   
+
+
   
 
     const paramDepositName = searchParams.get('depositName');
@@ -727,7 +734,7 @@ export default function Index({ params }: any) {
    
 
 
-    const [nickname, setNickname] = useState("");
+    const [nickname, setNickname] = useState(storeUser);
 
     const [inputNickname, setInputNickname] = useState('');
 
@@ -747,7 +754,7 @@ export default function Index({ params }: any) {
 
     // user walletAddress is auto generated or not
     const [isMyWalletAddress, setIsMyWalletAddress] = useState(false);
-    const [memberid, setMemberId] = useState(paramMemberid || "");
+    const [memberid, setMemberId] = useState("");
 
     const [userPassword, setUserPassword] = useState('');
 
@@ -787,6 +794,7 @@ export default function Index({ params }: any) {
 
 
     useEffect(() => {
+
         if (!orderId) {
           return;
         }
@@ -1531,6 +1539,14 @@ export default function Index({ params }: any) {
       return;
     }
 
+
+    // if krwAmount is more than 3000000, then set to 3000000, then alert user to select another amount
+    if (krwAmount > 3000000) {
+      toast.error('구매 금액은 3000000원 이하로 선택해주세요');
+      return;
+    }
+
+
     setAcceptingSellOrderRandom(true);
 
 
@@ -1701,54 +1717,6 @@ export default function Index({ params }: any) {
 
 
 
-  useEffect(() => {
-    
-    try {
-      if (memberid) {
-        setLoadingUser(true);
-        fetch('/api/user/loginUser', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            storecode: storecode,
-            memberid: memberid,
-            password: userPassword,
-          }),
-        })
-        .then(response => response?.json())
-        .then(data => {
-          console.log('loginUser data', data);
-          if (data.user) {
-            setAddress(data.user.walletAddress);
-            setNickname(data.user.nickname);
-            setDepositBankName(data.user.depositBankName || paramDepositBankName);
-            setDepositBankAccountNumber(data.user.depositBankAccountNumber || paramDepositBankAccountNumber);
-            setDepositName(data.user.depositName || paramDepositName);
-            setUser(data.user);
-          } else {
-            toast.error('로그인 실패');
-          }
-        })
-        .catch(error => {
-          console.error('loginUser error', error);
-          toast.error('로그인 실패');
-        })
-        .finally(() => {
-          setLoadingUser(false);
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching user', error);
-      setLoadingUser(false);
-      toast.error('회원 정보를 불러오는 데 실패했습니다.');
-    }
-  }, [memberid, userPassword, storecode, paramDepositName, paramDepositBankName, paramDepositBankAccountNumber]);
-
-
-
-
   if (orderId !== '0') {
       
       return (
@@ -1799,7 +1767,6 @@ export default function Index({ params }: any) {
     );
   }
     */
-
 
 
 
@@ -1860,14 +1827,13 @@ export default function Index({ params }: any) {
 
 
 
-
     
   return (
 
     <main className="
       pl-2 pr-2
       pb-10 min-h-[100vh] flex flex-col items-center justify-start container
-      max-w-screen-2xl
+      max-w-screen-sm
       mx-auto
       bg-zinc-50
       text-zinc-500
@@ -2190,19 +2156,6 @@ export default function Index({ params }: any) {
                   )}
 
 
-                  <div className='w-full flex flex-col gap-2 items-center justify-center'>
-                    <button
-                      onClick={() => router.push('/' + params.lang + '/' + params.center + '/trade-history' + '?memberid=' + memberid)}
-                      className="flex w-32 bg-[#3167b4] text-[#f3f4f6] text-sm rounded-lg p-2 items-center justify-center
-                      hover:bg-[#3167b4]/80
-                      hover:cursor-pointer
-                      hover:scale-105
-                      transition-transform duration-200 ease-in-out
-                      ">
-                      거래내역
-                    </button> 
-
-                  </div>
 
 
 
@@ -2388,7 +2341,7 @@ export default function Index({ params }: any) {
                             value={depositBankName || ''}
                             onChange={(e) => setDepositBankName(e.target.value)}
                             placeholder="입금자은행명"
-                            className=" text-sm font-semibold bg-zinc-200 text-zinc-600 px-4 py-2 rounded-md border border-zinc-100"
+                            className="w-40 text-sm font-semibold bg-zinc-200 text-zinc-600 px-4 py-2 rounded-md border border-zinc-100"
                           />
                         </div>
 
@@ -2405,7 +2358,7 @@ export default function Index({ params }: any) {
                             value={depositBankAccountNumber || ''}
                             onChange={(e) => setDepositBankAccountNumber(e.target.value)}
                             placeholder="입금자계좌번호"
-                            className=" text-sm font-semibold bg-zinc-200 text-zinc-600 px-4 py-2 rounded-md border border-zinc-100"
+                            className="w-40 text-sm font-semibold bg-zinc-200 text-zinc-600 px-4 py-2 rounded-md border border-zinc-100"
                           />
                         </div>
 
@@ -2426,7 +2379,7 @@ export default function Index({ params }: any) {
                             value={depositName || ''}
                             onChange={(e) => setDepositName(e.target.value)}
                             placeholder="입금자명"
-                            className=" text-sm font-semibold bg-zinc-200 text-zinc-600 px-4 py-2 rounded-md border border-zinc-100"
+                            className="w-40  text-sm font-semibold bg-zinc-200 text-zinc-600 px-4 py-2 rounded-md border border-zinc-100"
                           />
                         </div>
 
