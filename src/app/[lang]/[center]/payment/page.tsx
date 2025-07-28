@@ -1941,6 +1941,14 @@ export default function Index({ params }: any) {
       return;
     }
 
+
+    // if krwAmount is more than 3000000, then set to 3000000, then alert user to select another amount
+    if (krwAmount > 3000000) {
+      toast.error('구매 금액은 3000000원 이하로 선택해주세요');
+      return;
+    }
+
+
     setAcceptingSellOrderRandom(true);
 
 
